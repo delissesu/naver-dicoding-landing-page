@@ -7,6 +7,8 @@
   <meta name="description" content="Dicoding adalah platform pendidikan teknologi yang membantu menghasilkan talenta digital berstandar global untuk Indonesia.">
   
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  
   <script>
     tailwind.config = {
       theme: {
@@ -26,32 +28,12 @@
           boxShadow: {
             'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
           },
-          animation: {
-            'fade-in-up': 'fadeInUp 0.5s ease-out',
-            'fade-in': 'fadeIn 0.5s ease-out',
-          },
-          keyframes: {
-            fadeInUp: {
-              '0%': { 
-                opacity: '0',
-                transform: 'translateY(20px)'
-              },
-              '100%': {
-                opacity: '1',
-                transform: 'translateY(0)'
-              },
-            },
-            fadeIn: {
-              '0%': { opacity: '0' },
-              '100%': { opacity: '1' },
-            },
-          },
         },
       },
     }
   </script>
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -64,9 +46,56 @@
       background: rgba(14, 165, 233, 0.2);
       color: #0ea5e9;
     }
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .slide-in-left {
+      animation: slideInLeft 0.6s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      z-index: 9999;
+      transition: width 0.1s ease;
+    }
   </style>
 </head>
 <body class="bg-white text-slate-600">
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-indicator" style="width: 0%"></div>
+
   <!-- Background Decoration -->
   <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
     <div class="absolute -left-1/4 top-0 h-[600px] w-[600px] rounded-full bg-primary-100/40 blur-3xl"></div>
@@ -74,35 +103,33 @@
   </div>
 
   <!-- Header -->
-  <header class="fixed inset-x-0 top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-lg">
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-lg transition-all" id="header">
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
       <!-- Logo -->
-      <a href="#" class="flex items-center gap-2">
-        <div>
-          <img src="../img/dicoding-header-logo.png" alt="Dicoding" class="h-8">
-        </div>
+      <a href="#" class="flex items-center gap-2 slide-in-left">
+        <img src="../img/dicoding-header-logo.png" alt="Dicoding" class="h-10 w-auto">
       </a>
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:block">
         <ul class="flex items-center gap-8">
           <li>
-            <a href="#" class="text-sm font-medium text-slate-600 transition hover:text-primary-600">
+            <a href="#beranda" class="nav-link text-sm font-medium text-slate-600 transition hover:text-primary-600">
               Beranda
             </a>
           </li>
           <li>
-            <a href="#" class="text-sm font-medium text-slate-600 transition hover:text-primary-600">
-              Menu
+            <a href="#fitur" class="nav-link text-sm font-medium text-slate-600 transition hover:text-primary-600">
+              Fitur
             </a>
           </li>
           <li>
-            <a href="#" class="text-sm font-medium text-slate-600 transition hover:text-primary-600">
-              Apa yang Baru
+            <a href="#testimoni" class="nav-link text-sm font-medium text-slate-600 transition hover:text-primary-600">
+              Testimoni
             </a>
           </li>
           <li>
-            <a href="#" class="rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600">
+            <a href="#kontak" class="rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600 hover:shadow-md">
               Kontak
             </a>
           </li>
@@ -110,97 +137,366 @@
       </nav>
 
       <!-- Mobile Menu Button -->
-      <button type="button" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden">
-        <span class="sr-only">Buka menu</span>
+      <button type="button" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden" id="mobileMenuBtn">
         <i class="fas fa-bars text-xl"></i>
       </button>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="relative z-10 pt-32 lg:pt-40">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="flex flex-col items-center gap-16 lg:flex-row lg:items-center lg:gap-20">
-        <!-- Left Content -->
-        <div class="flex-1 animate-fade-in-up">
-          <div class="max-w-2xl space-y-8">
-            <h1 class="bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl lg:text-7xl">
-              Dicoding Indonesia
-            </h1>
-            <p class="text-lg leading-relaxed text-slate-600">
-              Kami yakin pendidikan teknologi adalah fondasi bagi setiap bangsa agar menjadi yang terdepan dalam menghadapi dunia digital. Dicoding hadir sebagai platform pendidikan teknologi yang membantu menghasilkan talenta digital berstandar global. Semua demi mengakselerasi Indonesia agar menjadi yang terdepan.
-            </p>
-            <div class="flex flex-wrap items-center gap-6">
-              <a href="#" class="group inline-flex items-center gap-2 rounded-full bg-primary-500 px-8 py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600">
-                Lebih Lanjut
-                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-              </a>
-              <a href="#" class="text-sm font-semibold text-slate-600 transition hover:text-primary-600">
-                Pelajari Selengkapnya →
-              </a>
-            </div>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu fixed inset-y-0 right-0 z-50 w-full bg-white shadow-2xl md:hidden" id="mobileMenu">
+    <div class="flex h-20 items-center justify-between px-6 border-b border-slate-100">
+      <span class="text-xl font-bold text-slate-900">Menu</span>
+      <button type="button" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100" id="closeMobileMenu">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <nav class="p-6">
+      <ul class="space-y-4">
+        <li>
+          <a href="#beranda" class="mobile-nav-link block py-3 text-lg font-medium text-slate-600 transition hover:text-primary-600">
+            Beranda
+          </a>
+        </li>
+        <li>
+          <a href="#fitur" class="mobile-nav-link block py-3 text-lg font-medium text-slate-600 transition hover:text-primary-600">
+            Fitur
+          </a>
+        </li>
+        <li>
+          <a href="#testimoni" class="mobile-nav-link block py-3 text-lg font-medium text-slate-600 transition hover:text-primary-600">
+            Testimoni
+          </a>
+        </li>
+        <li>
+          <a href="#kontak" class="mobile-nav-link block rounded-lg bg-primary-500 px-6 py-3 text-center text-lg font-semibold text-white transition hover:bg-primary-600">
+            Kontak
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
-            <!-- Stats -->
-            <div class="grid grid-cols-2 gap-8 border-t border-slate-100 pt-10 sm:grid-cols-4">
-              <div>
-                <p class="text-3xl font-bold text-slate-900">2.5M+</p>
-                <p class="mt-2 text-sm text-slate-600">Pengguna Aktif</p>
+  <!-- Main Content -->
+  <main class="relative z-10" id="beranda">
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 lg:pt-40 lg:pb-32">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="flex flex-col items-center gap-16 lg:flex-row lg:items-center lg:gap-20">
+          <!-- Left Content -->
+          <div class="flex-1 fade-in-up">
+            <div class="max-w-2xl space-y-8">
+              <div class="inline-block rounded-full bg-primary-100 px-4 py-2 text-sm font-semibold text-primary-700">
+                <i class="fas fa-star mr-2"></i>Platform Terpercaya
               </div>
-              <div>
-                <p class="text-3xl font-bold text-slate-900">90%</p>
-                <p class="mt-2 text-sm text-slate-600">Tingkat Kepuasan</p>
+              <h1 class="bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl lg:text-7xl">
+                Dicoding Indonesia
+              </h1>
+              <p class="text-lg leading-relaxed text-slate-600">
+                Kami yakin pendidikan teknologi adalah fondasi bagi setiap bangsa agar menjadi yang terdepan dalam menghadapi dunia digital. Dicoding hadir sebagai platform pendidikan teknologi yang membantu menghasilkan talenta digital berstandar global.
+              </p>
+              <div class="flex flex-wrap items-center gap-6">
+                <a href="#" class="group inline-flex items-center gap-2 rounded-full bg-primary-500 px-8 py-4 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-600 hover:shadow-xl">
+                  Mulai Belajar
+                  <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+                <a href="#fitur" class="text-sm font-semibold text-slate-600 transition hover:text-primary-600">
+                  Pelajari Selengkapnya →
+                </a>
               </div>
-              <div>
-                <p class="text-3xl font-bold text-slate-900">24/7</p>
-                <p class="mt-2 text-sm text-slate-600">Dukungan</p>
-              </div>
-              <div>
-                <p class="text-3xl font-bold text-slate-900">100+</p>
-                <p class="mt-2 text-sm text-slate-600">Mitra Global</p>
+
+              <!-- Stats Counter -->
+              <div class="grid grid-cols-2 gap-8 border-t border-slate-100 pt-10 sm:grid-cols-4">
+                <div class="stat-item">
+                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="2500000">0</p>
+                  <p class="mt-2 text-sm text-slate-600">Pengguna Aktif</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="90">0</p>
+                  <p class="mt-2 text-sm text-slate-600">Tingkat Kepuasan</p>
+                </div>
+                <div class="stat-item">
+                  <p class="text-3xl font-bold text-slate-900">24/7</p>
+                  <p class="mt-2 text-sm text-slate-600">Dukungan</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="100">0</p>
+                  <p class="mt-2 text-sm text-slate-600">Mitra Global</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Right Content - Hero Image -->
-        <div class="relative flex-1">
-          <div class="relative flex aspect-square max-w-xl items-center justify-center">
-            <!-- Decorative Elements -->
-            <div class="animate-pulse">
-              <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-100 to-primary-50 opacity-70 blur-3xl"></div>
-            </div>
-            
-            <!-- Main Image -->
-            <div class="relative rounded-full bg-white p-4 shadow-soft">
-              <div class="overflow-hidden rounded-full">
-                <img src="../img/circle-g.jpg" alt="Dicoding Logo" class="h-80 w-80 transform object-cover transition duration-500 hover:scale-105">
+          <!-- Right Content - Hero Image -->
+          <div class="relative flex-1 fade-in-up" style="animation-delay: 0.2s">
+            <div class="relative flex aspect-square max-w-xl items-center justify-center">
+              <div class="animate-pulse">
+                <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-100 to-primary-50 opacity-70 blur-3xl"></div>
+              </div>
+              <div class="relative rounded-full bg-white p-4 shadow-soft">
+                <div class="overflow-hidden rounded-full">
+                  <img src="../img/circle-g.jpg" alt="Dicoding Logo" class="h-80 w-80 object-cover rounded-full transform transition duration-500 hover:scale-105">
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-slate-50" id="fitur">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in-up">
+          <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Mengapa Memilih Dicoding?</h2>
+          <p class="text-lg text-slate-600 max-w-2xl mx-auto">Platform pembelajaran yang dirancang untuk menghasilkan talenta digital berkualitas tinggi</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="feature-card group rounded-2xl bg-white p-8 shadow-sm transition hover:shadow-lg">
+            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition group-hover:bg-primary-500 group-hover:text-white">
+              <i class="fas fa-graduation-cap text-2xl"></i>
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-slate-900">Kurikulum Terstruktur</h3>
+            <p class="text-slate-600">Materi pembelajaran yang disusun sistematis dan mengikuti standar industri global</p>
+          </div>
+
+          <div class="feature-card group rounded-2xl bg-white p-8 shadow-sm transition hover:shadow-lg">
+            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition group-hover:bg-primary-500 group-hover:text-white">
+              <i class="fas fa-certificate text-2xl"></i>
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-slate-900">Sertifikat Resmi</h3>
+            <p class="text-slate-600">Dapatkan sertifikat yang diakui oleh industri setelah menyelesaikan pembelajaran</p>
+          </div>
+
+          <div class="feature-card group rounded-2xl bg-white p-8 shadow-sm transition hover:shadow-lg">
+            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition group-hover:bg-primary-500 group-hover:text-white">
+              <i class="fas fa-users text-2xl"></i>
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-slate-900">Komunitas Aktif</h3>
+            <p class="text-slate-600">Bergabung dengan ribuan developer dan profesional IT di seluruh Indonesia</p>
+          </div>
+
+          <div class="feature-card group rounded-2xl bg-white p-8 shadow-sm transition hover:shadow-lg">
+            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition group-hover:bg-primary-500 group-hover:text-white">
+              <i class="fas fa-laptop-code text-2xl"></i>
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-slate-900">Praktik Langsung</h3>
+            <p class="text-slate-600">Belajar dengan metode hands-on melalui proyek nyata dan studi kasus</p>
+          </div>
+
+          <div class="feature-card group rounded-2xl bg-white p-8 shadow-sm transition hover:shadow-lg">
+            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition group-hover:bg-primary-500 group-hover:text-white">
+              <i class="fas fa-headset text-2xl"></i>
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-slate-900">Mentor Berpengalaman</h3>
+            <p class="text-slate-600">Dibimbing oleh praktisi dan ahli teknologi dengan pengalaman industri</p>
+          </div>
+
+          <div class="feature-card group rounded-2xl bg-white p-8 shadow-sm transition hover:shadow-lg">
+            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition group-hover:bg-primary-500 group-hover:text-white">
+              <i class="fas fa-briefcase text-2xl"></i>
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-slate-900">Job Connector</h3>
+            <p class="text-slate-600">Akses ke jaringan perusahaan mitra untuk peluang karir di bidang teknologi</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20" id="testimoni">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in-up">
+          <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Apa Kata Mereka?</h2>
+          <p class="text-lg text-slate-600 max-w-2xl mx-auto">Testimoni dari alumni dan pengguna Dicoding</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="testimonial-card rounded-2xl bg-white p-8 shadow-sm border border-slate-100">
+            <div class="mb-4 flex text-yellow-400">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="mb-6 text-slate-600">"Dicoding memberikan pembelajaran yang sangat terstruktur dan mudah dipahami. Sekarang saya bekerja sebagai Full Stack Developer di perusahaan startup."</p>
+            <div class="flex items-center gap-4">
+              <div class="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold">
+                BW
+              </div>
+              <div>
+                <p class="font-semibold text-slate-900">Budi Wibowo</p>
+                <p class="text-sm text-slate-600">Full Stack Developer</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card rounded-2xl bg-white p-8 shadow-sm border border-slate-100">
+            <div class="mb-4 flex text-yellow-400">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="mb-6 text-slate-600">"Materi yang diajarkan sangat relevan dengan kebutuhan industri. Mentor-mentornya juga sangat responsif dan membantu."</p>
+            <div class="flex items-center gap-4">
+              <div class="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold">
+                SP
+              </div>
+              <div>
+                <p class="font-semibold text-slate-900">Siti Pertiwi</p>
+                <p class="text-sm text-slate-600">Mobile Developer</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card rounded-2xl bg-white p-8 shadow-sm border border-slate-100">
+            <div class="mb-4 flex text-yellow-400">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="mb-6 text-slate-600">"Platform terbaik untuk belajar programming di Indonesia. Komunitasnya sangat aktif dan supportif."</p>
+            <div class="flex items-center gap-4">
+              <div class="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold">
+                AR
+              </div>
+              <div>
+                <p class="font-semibold text-slate-900">Ahmad Rizki</p>
+                <p class="text-sm text-slate-600">Data Scientist</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20 bg-slate-50" id="kontak">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 items-center">
+          <div class="fade-in-up">
+            <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Hubungi Kami</h2>
+            <p class="text-lg text-slate-600 mb-8">Punya pertanyaan? Kami siap membantu Anda memulai perjalanan belajar teknologi</p>
+            
+            <div class="space-y-6">
+              <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 text-primary-600">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-slate-900">Email</p>
+                  <p class="text-slate-600">support@dicoding.com</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 text-primary-600">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-slate-900">Telepon</p>
+                  <p class="text-slate-600">+62 812-3456-7890</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 text-primary-600">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-slate-900">Alamat</p>
+                  <p class="text-slate-600">Jakarta, Indonesia</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fade-in-up" style="animation-delay: 0.2s">
+            <form class="rounded-2xl bg-white p-8 shadow-lg" id="contactForm">
+              <div class="space-y-6">
+                <div>
+                  <label for="name" class="block text-sm font-medium text-slate-900 mb-2">Nama Lengkap</label>
+                  <input type="text" id="name" name="name" required class="w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200" placeholder="Masukkan nama Anda">
+                </div>
+                
+                <div>
+                  <label for="email" class="block text-sm font-medium text-slate-900 mb-2">Email</label>
+                  <input type="email" id="email" name="email" required class="w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200" placeholder="nama@email.com">
+                </div>
+                
+                <div>
+                  <label for="message" class="block text-sm font-medium text-slate-900 mb-2">Pesan</label>
+                  <textarea id="message" name="message" rows="4" required class="w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200" placeholder="Tulis pesan Anda..."></textarea>
+                </div>
+                
+                <button type="submit" class="w-full rounded-lg bg-primary-500 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-600 hover:shadow-xl">
+                  Kirim Pesan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- Social Media Links -->
-  <aside class="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-6 lg:flex">
-    <a href="#" class="group relative">
-      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
-      <i class="fab fa-youtube relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
-    </a>
-    <a href="#" class="group relative">
-      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
-      <i class="fab fa-linkedin-in relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
-    </a>
-    <a href="#" class="group relative">
-      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
-      <i class="fab fa-twitter relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
-    </a>
-    <a href="#" class="group relative">
-      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
-      <i class="fab fa-facebook-f relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
-    </a>
-  </aside>
+  <!-- Footer -->
+  <footer class="border-t border-slate-100 bg-white py-12">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2 mb-4">
+            <img src="../img/dicoding-header-logo.png" alt="Dicoding" class="h-10 w-auto">
+          </div>
+          <p class="text-slate-600 max-w-md">Platform pendidikan teknologi terdepan di Indonesia untuk menghasilkan talenta digital berstandar global.</p>
+          <div class="mt-6 flex gap-4">
+            <a href="#" class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600 transition hover:bg-primary-500 hover:text-white">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600 transition hover:bg-primary-500 hover:text-white">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600 transition hover:bg-primary-500 hover:text-white">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600 transition hover:bg-primary-500 hover:text-white">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="mb-4 font-semibold text-slate-900">Tautan Cepat</h3>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li><a href="#" class="transition hover:text-primary-600">Tentang Kami</a></li>
+            <li><a href="#" class="transition hover:text-primary-600">Kelas</a></li>
+            <li><a href="#" class="transition hover:text-primary-600">Blog</a></li>
+            <li><a href="#" class="transition hover:text-primary-600">Karir</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="mb-4 font-semibold text-slate-900">Dukungan</h3>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li><a href="#" class="transition hover:text-primary-600">FAQ</a></li>
+            <li><a href="#" class="transition hover:text-primary-600">Bantuan</a></li>
+            <li><a href="#" class="transition hover:text-primary-600">Syarat & Ketentuan</a></li>
+            <li><a href="#" class="transition hover:text-primary-600">Kebijakan Privasi</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mt-12 border-t border-slate-100 pt-8 text-center text-sm text-slate-600">
+        <p>&copy; 2025 Dicoding Indonesia.</p>
+      </div>
+    </div>
+  </footer>
 
-</body>
-</html>
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="fixed bottom-
