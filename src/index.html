@@ -498,5 +498,104 @@
     </div>
   </footer>
 
-  <!-- Back to Top Button -->
-  <button id="backToTop" class="fixed bottom-
+<!-- Back to Top Button -->
+<button id="backToTop" class="fixed bottom-8 right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary-500 text-white shadow-lg transition hover:bg-primary-600 opacity-0 invisible">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- JavaScript -->
+<script>
+  $(document).ready(function() {
+    // Mobile menu toggle
+    $('#mobileMenuBtn').on('click', function() {
+      $('#mobileMenu').addClass('active');
+    });
+    
+    $('#closeMobileMenu').on('click', function() {
+      $('#mobileMenu').removeClass('active');
+    });
+    
+    $('.mobile-nav-link').on('click', function() {
+      $('#mobileMenu').removeClass('active');
+    });
+    
+    // Scroll indicator
+    $(window).on('scroll', function() {
+      const scrollTop = $(window).scrollTop();
+      const docHeight = $(document).height() - $(window).height();
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      $('.scroll-indicator').css('width', scrollPercent + '%');
+      
+      // Header shadow on scroll
+      if (scrollTop > 10) {
+        $('#header').addClass('shadow-sm');
+      } else {
+        $('#header').removeClass('shadow-sm');
+      }
+      
+      // Back to top button visibility
+      if (scrollTop > 300) {
+        $('#backToTop').removeClass('opacity-0 invisible').addClass('opacity-100');
+      } else {
+        $('#backToTop').removeClass('opacity-100').addClass('opacity-0 invisible');
+      }
+    });
+    
+    // Back to top button functionality
+    $('#backToTop').on('click', function() {
+      $('html, body').animate({ scrollTop: 0 }, 500);
+    });
+    
+    // Smooth scrolling for nav links
+    $('a[href^="#"]').on('click', function(e) {
+      if (this.hash !== '') {
+        e.preventDefault();
+        const hash = this.hash;
+        $('html, body').animate({
+          scrollTop: $(hash).offset().top - 80
+        }, 500);
+      }
+    });
+    
+    // Stats counter animation
+    function animateStats() {
+      $('.stat-number').each(function() {
+        const $this = $(this);
+        const target = parseInt($this.attr('data-target'));
+        
+        $({ Counter: 0 }).animate({
+          Counter: target
+        }, {
+          duration: 2000,
+          easing: 'swing',
+          step: function() {
+            $this.text(Math.ceil(this.Counter).toLocaleString());
+          }
+        });
+      });
+    }
+    
+    // Contact form submission
+    $('#contactForm').on('submit', function(e) {
+      e.preventDefault();
+      alert('Pesan Anda telah terkirim. Terima kasih!');
+      this.reset();
+    });
+    
+    // Trigger animations on page load
+    setTimeout(function() {
+      animateStats();
+    }, 500);
+    
+    // Feature cards animation on scroll
+    $(window).on('scroll', function() {
+      $('.feature-card, .testimonial-card').each(function() {
+        if ($(this).offset().top < ($(window).scrollTop() + $(window).height() - 100)) {
+          $(this).addClass('fade-in-up');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
