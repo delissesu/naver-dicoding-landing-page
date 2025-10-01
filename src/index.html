@@ -208,11 +208,11 @@
               <!-- Stats Counter -->
               <div class="grid grid-cols-2 gap-8 border-t border-slate-100 pt-10 sm:grid-cols-4">
                 <div class="stat-item">
-                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="2500000">0</p>
+                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="2500000" data-suffix="+">0</p>
                   <p class="mt-2 text-sm text-slate-600">Pengguna Aktif</p>
                 </div>
                 <div class="stat-item">
-                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="90">0</p>
+                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="90" data-suffix="%">0</p>
                   <p class="mt-2 text-sm text-slate-600">Tingkat Kepuasan</p>
                 </div>
                 <div class="stat-item">
@@ -220,7 +220,7 @@
                   <p class="mt-2 text-sm text-slate-600">Dukungan</p>
                 </div>
                 <div class="stat-item">
-                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="100">0</p>
+                  <p class="stat-number text-3xl font-bold text-slate-900" data-target="100" data-suffix="+">0</p>
                   <p class="mt-2 text-sm text-slate-600">Mitra Global</p>
                 </div>
               </div>
@@ -562,6 +562,7 @@
       $('.stat-number').each(function() {
         const $this = $(this);
         const target = parseInt($this.attr('data-target'));
+        const suffix = $this.attr('data-suffix') || '';
         
         $({ Counter: 0 }).animate({
           Counter: target
@@ -569,7 +570,34 @@
           duration: 2000,
           easing: 'swing',
           step: function() {
-            $this.text(Math.ceil(this.Counter).toLocaleString());
+            let currentValue = Math.ceil(this.Counter);
+            let displayValue;
+            
+            // Format sesuai dengan target angka
+            if (target >= 1000000) {
+              // Untuk 2.5M+ pengguna aktif
+              displayValue = (currentValue / 1000000).toFixed(1) + 'M';
+            } else if (target >= 1000) {
+              // Untuk angka ribuan
+              displayValue = (currentValue / 1000).toFixed(0) + 'K';
+            } else {
+              // Untuk angka kecil (persentase, dll)
+              displayValue = currentValue.toString();
+            }
+            
+            $this.text(displayValue + suffix);
+          },
+          complete: function() {
+            // Pastikan nilai akhir benar
+            let finalValue;
+            if (target >= 1000000) {
+              finalValue = (target / 1000000).toFixed(1) + 'M';
+            } else if (target >= 1000) {
+              finalValue = (target / 1000).toFixed(0) + 'K';
+            } else {
+              finalValue = target.toString();
+            }
+            $this.text(finalValue + suffix);
           }
         });
       });
@@ -582,10 +610,29 @@
       this.reset();
     });
     
-    // Trigger animations on page load
-    setTimeout(function() {
-      animateStats();
-    }, 500);
+    // Trigger animations dengan intersection observer
+    let statsAnimated = false;
+    
+    function checkStatsVisibility() {
+      const statsSection = $('.stat-item').first();
+      if (statsSection.length) {
+        const elementTop = statsSection.offset().top;
+        const elementBottom = elementTop + statsSection.outerHeight();
+        const viewportTop = $(window).scrollTop();
+        const viewportBottom = viewportTop + $(window).height();
+        
+        if (elementBottom > viewportTop && elementTop < viewportBottom && !statsAnimated) {
+          animateStats();
+          statsAnimated = true;
+        }
+      }
+    }
+    
+    // Check on page load
+    setTimeout(checkStatsVisibility, 500);
+    
+    // Check on scroll
+    $(window).on('scroll', checkStatsVisibility);
     
     // Feature cards animation on scroll
     $(window).on('scroll', function() {
