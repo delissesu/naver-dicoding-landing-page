@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dicoding Indonesia - Platform Pendidikan Teknologi</title>
+  <meta name="description" content="Dicoding adalah platform pendidikan teknologi yang membantu menghasilkan talenta digital berstandar global untuk Indonesia.">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+            },
+          },
+          boxShadow: {
+            'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.5s ease-out',
+            'fade-in': 'fadeIn 0.5s ease-out',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { 
+                opacity: '0',
+                transform: 'translateY(20px)'
+              },
+              '100%': {
+                opacity: '1',
+                transform: 'translateY(0)'
+              },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    ::selection {
+      background: rgba(14, 165, 233, 0.2);
+      color: #0ea5e9;
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-600">
+  <!-- Background Decoration -->
+  <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div class="absolute -left-1/4 top-0 h-[600px] w-[600px] rounded-full bg-primary-100/40 blur-3xl"></div>
+    <div class="absolute -right-1/4 top-1/3 h-[600px] w-[600px] rounded-full bg-primary-50/40 blur-3xl"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-lg">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2">
+        <div>
+          <img src="../img/dicoding-header-logo.png" alt="Dicoding" class="h-8">
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:block">
+        <ul class="flex items-center gap-8">
+          <li>
+            <a href="#" class="text-sm font-medium text-slate-600 transition hover:text-primary-600">
+              Beranda
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-sm font-medium text-slate-600 transition hover:text-primary-600">
+              Menu
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-sm font-medium text-slate-600 transition hover:text-primary-600">
+              Apa yang Baru
+            </a>
+          </li>
+          <li>
+            <a href="#" class="rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600">
+              Kontak
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button type="button" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden">
+        <span class="sr-only">Buka menu</span>
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="relative z-10 pt-32 lg:pt-40">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="flex flex-col items-center gap-16 lg:flex-row lg:items-center lg:gap-20">
+        <!-- Left Content -->
+        <div class="flex-1 animate-fade-in-up">
+          <div class="max-w-2xl space-y-8">
+            <h1 class="bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl lg:text-7xl">
+              Dicoding Indonesia
+            </h1>
+            <p class="text-lg leading-relaxed text-slate-600">
+              Kami yakin pendidikan teknologi adalah fondasi bagi setiap bangsa agar menjadi yang terdepan dalam menghadapi dunia digital. Dicoding hadir sebagai platform pendidikan teknologi yang membantu menghasilkan talenta digital berstandar global. Semua demi mengakselerasi Indonesia agar menjadi yang terdepan.
+            </p>
+            <div class="flex flex-wrap items-center gap-6">
+              <a href="#" class="group inline-flex items-center gap-2 rounded-full bg-primary-500 px-8 py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600">
+                Lebih Lanjut
+                <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+              </a>
+              <a href="#" class="text-sm font-semibold text-slate-600 transition hover:text-primary-600">
+                Pelajari Selengkapnya →
+              </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 gap-8 border-t border-slate-100 pt-10 sm:grid-cols-4">
+              <div>
+                <p class="text-3xl font-bold text-slate-900">2.5M+</p>
+                <p class="mt-2 text-sm text-slate-600">Pengguna Aktif</p>
+              </div>
+              <div>
+                <p class="text-3xl font-bold text-slate-900">90%</p>
+                <p class="mt-2 text-sm text-slate-600">Tingkat Kepuasan</p>
+              </div>
+              <div>
+                <p class="text-3xl font-bold text-slate-900">24/7</p>
+                <p class="mt-2 text-sm text-slate-600">Dukungan</p>
+              </div>
+              <div>
+                <p class="text-3xl font-bold text-slate-900">100+</p>
+                <p class="mt-2 text-sm text-slate-600">Mitra Global</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Content - Hero Image -->
+        <div class="relative flex-1">
+          <div class="relative flex aspect-square max-w-xl items-center justify-center">
+            <!-- Decorative Elements -->
+            <div class="animate-pulse">
+              <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-100 to-primary-50 opacity-70 blur-3xl"></div>
+            </div>
+            
+            <!-- Main Image -->
+            <div class="relative rounded-full bg-white p-4 shadow-soft">
+              <div class="overflow-hidden rounded-full">
+                <img src="../img/circle-g.jpg" alt="Dicoding Logo" class="h-80 w-80 transform object-cover transition duration-500 hover:scale-105">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Social Media Links -->
+  <aside class="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-6 lg:flex">
+    <a href="#" class="group relative">
+      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
+      <i class="fab fa-youtube relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
+    </a>
+    <a href="#" class="group relative">
+      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
+      <i class="fab fa-linkedin-in relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
+    </a>
+    <a href="#" class="group relative">
+      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
+      <i class="fab fa-twitter relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
+    </a>
+    <a href="#" class="group relative">
+      <span class="absolute inset-0 rounded-lg bg-slate-100 opacity-0 transition group-hover:opacity-100"></span>
+      <i class="fab fa-facebook-f relative z-10 text-xl text-slate-600 transition group-hover:text-primary-500"></i>
+    </a>
+  </aside>
+
+</body>
+</html>
